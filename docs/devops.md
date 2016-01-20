@@ -51,3 +51,4 @@
   - BOSH
   - CloudFoundry
   - jenkins
+  - swagger
