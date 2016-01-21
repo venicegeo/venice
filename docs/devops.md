@@ -31,8 +31,8 @@
   - build and testing tools baked into the jenkins machine image (via [gondola](https://github.com/venicegeo/gondola)).
 
 ![Jenkins Build Dashboard](./img/jenkins-dashboard.png)
-![Jenkins Build Pipeline](./img/jenkins-pipeline.png)
 
+![Jenkins Build Pipeline](./img/jenkins-pipeline.png)
 
 #### [CloudFoundry](http://login.cf.piazzageo.io)
 - Running Piazza services:
