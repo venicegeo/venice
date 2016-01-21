@@ -37,6 +37,11 @@
   - [pz-logger](https://github.com/venicegeo/pz-logger)
   - [pz-alerter](https://github.com/venicegeo/pz-alerter)
   - [pz-uuidgen](https://github.com/venicegeo/pz-uuidgen)
+  - [pz-jobmanager](https://github.com/venicegeo/pz-jobmanager)
+  - [pz-dispatcher](https://github.com/venicegeo/pz-jobmanager)
+  - [pz-gateway](https://github.com/venicegeo/pz-gateway)
+  - [pzsvc-gdaldem](https://github.com/venicegeo/pz-gdaldem)
+  - [pzsvc-lasinfo](https://github.com/venicegeo/pz-lasinfo)
 
 #### Shared Services
 - _Note: these services are currently running in the larger AWS environment, but they are being migrated to CloudFoundry._
