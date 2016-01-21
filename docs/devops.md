@@ -43,6 +43,7 @@
   - [pz-jobmanager](https://github.com/venicegeo/pz-jobmanager)
   - [pz-dispatcher](https://github.com/venicegeo/pz-jobmanager)
   - [pz-gateway](https://github.com/venicegeo/pz-gateway)
+  - [pz-servicecontroller](https://github.com/venicegeo/pz-servicecontroller)
   - [pzsvc-gdaldem](https://github.com/venicegeo/pz-gdaldem)
   - [pzsvc-lasinfo](https://github.com/venicegeo/pz-lasinfo)
 
