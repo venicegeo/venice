@@ -13,12 +13,12 @@
 - Application source code.
 - AWS Cloudformation templates.
   - All resources defined in a single JSON file, within SCM.
-  - Venice cloudformation templates: [canal](https://github.com/venicegeo/canal) (_private repo_)
+  - Venice cloudformation templates: [canal](https://github.com/venicegeo/canal) _(private repo)_
 
 #### Persistent
 - Machine configuration.
 - Baked into Amazon Machine Images (AMI) using Chef.
-- Venice AMI build process: [gondola](https://github.com/venicegeo/gondola) (_private repo_)
+- Venice AMI build process: [gondola](https://github.com/venicegeo/gondola) _(private repo)_
 
 
 ### CI/CD
