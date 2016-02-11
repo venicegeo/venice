@@ -61,3 +61,51 @@
   - CloudFoundry
   - jenkins
   - swagger
+
+## Status Update: 11 Feb 2016
+
+_The State of VeniceGEO Devops_
+
+### Past
+
+#### First pass infrastructure complete.
+
+##### Piazza specific:
+
+  * pz-* core components _cf_
+  * pzsvc-* services _cf_
+  * Swagger _aws, cf2_
+  * Kafka _aws_
+  * Zookeeper _aws_
+  * MongoDB _aws_
+  * PostGIS _aws_
+  * Elasticsearch _aws_
+  * Geoserver _aws_
+
+##### Temporary Infrastructure components:
+  * Jenkins _aws_
+  * OS Cloud Foundry (`*.cf.piazzageo.io`) _aws_
+
+### Present
+
+#### Migration to GEOINT
+
+  * Pivotal Cloud Foundry (`*.cf2.piazzageo.io`) || GEOINT's PCF
+  * Deploy Piazza's deps to PCF (e.g. kafka, zk, etc) and make case for non-PCF services.
+  * Build piazza components on GEOINT Jenkins.
+    * Artifacts in NEXUS
+    * Blue/Green deploys to GEOINT PCF.
+
+#### Continue to stand up new services and support.
+
+  * GeoSHAPE
+  * logstash?
+
+### Future
+
+#### Security
+
+  * HP Fortify
+  * S3 Bucket policies
+  * Secrets sharing
+  * SSL
