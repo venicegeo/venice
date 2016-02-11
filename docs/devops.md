@@ -72,6 +72,8 @@ _The State of VeniceGEO Devops_
 
 ##### Piazza specific:
 
+These services are available for piazza devs to work with:
+
   * pz-* core components _cf_
   * pzsvc-* services _cf_
   * Swagger _aws, cf2_
@@ -83,12 +85,15 @@ _The State of VeniceGEO Devops_
   * Geoserver _aws_
 
 ##### Temporary Infrastructure components:
+
   * Jenkins _aws_
   * OS Cloud Foundry (`*.cf.piazzageo.io`) _aws_
 
 ### Present
 
 #### Migration to GEOINT
+
+_Moving to the "production" environment._
 
   * Pivotal Cloud Foundry (`*.cf2.piazzageo.io`) || GEOINT's PCF
   * Deploy Piazza's deps to PCF (e.g. kafka, zk, etc) and make case for non-PCF services.
@@ -97,6 +102,8 @@ _The State of VeniceGEO Devops_
     * Blue/Green deploys to GEOINT PCF.
 
 #### Continue to stand up new services and support.
+
+_As a Piazza dev, I need X to get work done._
 
   * GeoSHAPE
   * logstash?
