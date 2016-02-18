@@ -12,9 +12,9 @@ terms below. This license is for your protection as a Contributor as
 well as the protection of the Project and its users; it does not
 change your rights to use your own Contributions for any other purpose.
 If you have not already done so, please complete and sign, then scan
-and email a pdf file of this Agreement to mgerlek@radiantblue.com.
+and email a pdf file of this Agreement to venice-cla@radiantblue.com.
 Alternatively, you may send an original signed Agreement to
-    Michael P. Gerlek
+    Director of Contracts
     RadiantBlue Technologies
     4501 Singer Court, Suite 220
     Chantilly, VA 20151 USA

@@ -1,6 +1,6 @@
 
                 RadiantBlue Technologies, Inc. -- Venice Project
-                
+
   Software Grant and Corporate Contributor License Agreement ("Agreement")
                       http://www.apache.org/licenses/
 
@@ -15,18 +15,18 @@
    your rights to use your own Contributions for any other purpose.
 
    This version of the Agreement allows an entity (the "Corporation") to
-   submit Contributions to the Project, to authorize Contributions 
-   submitted by its designated employees to the Project, and to grant 
+   submit Contributions to the Project, to authorize Contributions
+   submitted by its designated employees to the Project, and to grant
    copyright and patent licenses thereto.
 
    If you have not already done so, please complete and sign, then scan and
-   email a pdf file of this Agreement to mgerlek@radiantblue.com.
+   email a pdf file of this Agreement to venice-cla@radiantblue.com.
    Alternatively, you may send an original signed Agreement to
-       Michael P. Gerlek
+       Director of Contracts
        RadiantBlue Technologies
        4501 Singer Court, Suite 220
        Chantilly, VA 20151 USA
-   
+
    Please read this document carefully before signing and keep a copy for
    your records.
 
