@@ -1,118 +1,171 @@
-# VeniceGEO Devops
+# Piazza Devops
 
-## Overview
+* [Credentials](#credentials)
+* [Cloud Foundry (The Platform)](#cloud-foundry)
+  - [Local Development](#local-development)
+  - [Services](#services)
+* [Jenkins (Automation)](#jenkins)
+  - [Special Features](#special-sauce)
+  - [Migrating](#migrating)
+* [Nexus (Artifact Repository)](#nexus)
+* [Backing Services](#backing-services)
+* [Roadmap](#roadmap)
 
-### Infrastructure/Configuration in Code
+## Credentials
 
-#### Ephemeral
-- Amazon physical resources (ec2 instances).
-- These resources will come and go.
-- *Should* only be created as a result of an automated process.
+* You'll need to setup an LDAP account with [GEOINT Services](https://accounts.geointservices.io/).
+* Make sure you can access [our organization](https://jenkins.devops.geointservices.io/job/piazza/).
 
-#### Runtime
-- Application source code.
-- AWS Cloudformation templates.
-  - All resources defined in a single JSON file, within SCM.
-  - Venice cloudformation templates: [canal](https://github.com/venicegeo/canal) _(private repo)_
+## Cloud Foundry
 
-#### Persistent
-- Machine configuration.
-- Baked into Amazon Machine Images (AMI) using Chef.
-- Venice AMI build process: [gondola](https://github.com/venicegeo/gondola) _(private repo)_
+### Local Development
+* [Install](https://github.com/cloudfoundry/cli#downloads) the `cf` CLI client.
+* Login to PCF:
 
+  ```
+    cf login -a https://api.devops.geointservices.io
+    # Note: email = your LDAP username
+    cf target -o piazza -s simulator-dev
+  ```
 
-### CI/CD
+* The `simulator-dev` space is the sandbox environment for piazza devs.
+* `simulator-stage` is the space jenkins will use to stage apps.
+* Useful commands:
 
-#### [Jenkins](http://jenkins.piazzageo.io)
-- One script defines all build pipelines: [jenkins](https://github.com/venicegeo/jenkins)
-- Testing and building artifacts; automated delivery to CloudFoundry.
-  - Feedback published in [slack](https://venicegeo.slack.com).
-  - Artifacts are currently being stored in s3, but we're move to Nexus soon.
-  - build and testing tools baked into the jenkins machine image (via [gondola](https://github.com/venicegeo/gondola)).
+  ```
+    cf apps                      # list all apps
+    cf app pz-logger             # individual app info
+    cf logs --recent pz-gateway  # show recent logs for an app
+    cf logs pz-gateway           # tail and follow logs for an app
+    cf services                  # view a list of running services
+    cf push                      # push an app to Cloud Foundry
+  ```
 
+### Services
+* Bind a service to your app using the `manifest` to expose `VCAP_SERVICES`:
+
+  ```
+    applications:
+      services:
+        - pz-postgres
+        - pz-blobstore
+  ```
+
+* Available services:
+  - `pz-blobstore` - s3 bucket
+  - `pz-discover` - legacy service discovery
+  - `pz-geoserver`
+  - `pz-kafka`
+  - `pz-postgres`
+  - `pz-zookeeper`
+  - `pz-mongodb` - *Note: currently waiting for FADE team to resolve an issue.*
+  - `pz-elasticsearch` - *COMING SOON*
+* Sample `VCAP_SERVICES` json:
+
+  ```
+    {
+     "VCAP_SERVICES": {
+      "user-provided": [
+       {
+        "credentials": {
+         "bucket": "pz-blobstore-staging"
+        },
+        "label": "user-provided",
+        "name": "pz-blobstore",
+        "syslog_drain_url": "",
+        "tags": []
+       }
+      ]
+     }
+    }
+  ```
+
+## Jenkins
+
+* All jobs are generated and maintained using the [jenkins seed job](https://github.com/venicegeo/jenkins/tree/geoint).
+* All jobs publish status to [slack](https://venicegeo.slack.com/messages/jenkins/).
+* Connect your github repo to jenkins:
+  - Go to github.com/venicegeo/<your-repository> and navigate to `Settings -> Webhooks & Services -> Services -> Add service -> Jenkins (GitHub plugin)`
+  - Webhook URL: `https://jenkins.devops.geointservices.io/github-webhook/`
+* Create automation scripts:
+  - `./ci/` - holds any scripts you'd like jenkins to use in building, testing, and deploying your project.
+    - `./ci/<job-name>.sh` corresponds to the `<job-name>` in your Jenkins pipeline.
+* Add your repo to the [Jenkins Projects list](https://github.com/venicegeo/jenkins/blob/geoint/Projects.groovy):
+
+    ```
+    static projects = [
+      [
+       name: 'my-app',
+       pipeline: ['test', 'archive', 'stage']
+      ]
+    ]
+    ```
+
+### Special Sauce
+* Versioning - the automation pipeline follows a versioning convention that is coupled with the git revision (i.e. we're not aiming for human readability).
+* `./ci/vars.sh` - projects should provide the automation with a file `./ci/vars.sh` that defines two variables `APP` and `EXT`:
+
+  ```
+    APP=pz-app
+    EXT=jar
+  ```
+
+* `archive` - archive jobs automagically push your artifact to nexus.
+  - Required: `./ci/archive.sh` needs to build your artifact and move it to `./$APP.$EXT`.
+* `stage` - stage jobs automagically stage your app in Cloud Foundry.
+  - Required: `manifest.jenkins.yml` - a manifest specific to Jenkins (and the staging environment).
+* Static file projects - the automation will expect a `tar.gz` file to push to nexus; it is recommended to do something like: `./ci/archive.sh`:
+
+  ```
+    #!/bin/bash -ex
+
+    pushd `dirname $0`/.. > /dev/null
+    root=$(pwd -P)
+    popd > /dev/null
+
+    # APP=<my-project>
+    # EXT=tar.gz
+    source $root/ci/vars.sh
+    tar -czf $APP.$EXT -C $root <directory-that-contains-the-static-files>
+  ```
+
+* Binary projects (I'm looking at you `golang`) - `EXT=bin` let's the automation know we're dealing with an executable.
+* The seed job will organize your project's jobs into a folder:
 ![Jenkins Build Dashboard](./img/jenkins-dashboard.png)
-
+* The seed job will create a pipeline view for you:
 ![Jenkins Build Pipeline](./img/jenkins-pipeline.png)
 
-#### [CloudFoundry](http://login.cf.piazzageo.io)
-- Running Piazza services:
-  - [pz-discover](https://github.com/venicegeo/pz-discover)
-  - [pz-logger](https://github.com/venicegeo/pz-logger)
-  - [pz-alerter](https://github.com/venicegeo/pz-alerter)
-  - [pz-uuidgen](https://github.com/venicegeo/pz-uuidgen)
-  - [pz-jobmanager](https://github.com/venicegeo/pz-jobmanager)
-  - [pz-dispatcher](https://github.com/venicegeo/pz-jobmanager)
-  - [pz-gateway](https://github.com/venicegeo/pz-gateway)
-  - [pz-servicecontroller](https://github.com/venicegeo/pz-servicecontroller)
-  - [pzsvc-gdaldem](https://github.com/venicegeo/pz-gdaldem)
-  - [pzsvc-lasinfo](https://github.com/venicegeo/pz-lasinfo)
+### Migrating
 
-#### Shared Services
-- _Note: these services are currently running in the larger AWS environment, but they are being migrated to CloudFoundry._
-  - elasticsearch 
-  - geoserver
-  - kafka
-  - mongodb
-  - postgresql (with PostGIS)
-  - zookeeper
+* Create new build scripts in `./ci`
+  - We are storing scripts in `./ci` (not `./scripts`) to allow for both environments to function in parallel.
+  - The functionality of `cf-deliver` can be accessed using the `stage` keyword.
+  - Switch webooks to point to teh geoint jenkins.
 
-- Not migrating to CloudFoundry, but available nonetheless:
-  - BOSH
-  - CloudFoundry
-  - jenkins
-  - swagger
+## Nexus
 
-## Status Update: 11 Feb 2016
+* We are now storing build artifacts in [Nexus](https://nexus.devops.geointservices.io/#welcome).
 
-_The State of VeniceGEO Devops_
+## Backing Services
 
-### Past
+* Backing Services come from one of three possible locations:
+  - AWS FADE: LDAP.
+  - pz-infrastructure: our VPC.
+  - PCF Marketplace: `cf marketplace`
 
-#### First pass infrastructure complete.
+## Roadmap
 
-##### Piazza specific:
-
-These services are available for piazza devs to work with:
-
-  * pz-* core components _cf_
-  * pzsvc-* services _cf_
-  * Swagger _aws, cf2_
-  * Kafka _aws_
-  * Zookeeper _aws_
-  * MongoDB _aws_
-  * PostGIS _aws_
-  * Elasticsearch _aws_
-  * Geoserver _aws_
-
-##### Temporary Infrastructure components:
-
-  * Jenkins _aws_
-  * OS Cloud Foundry (`*.cf.piazzageo.io`) _aws_
-
-### Present
-
-#### Migration to GEOINT
-
-_Moving to the "production" environment._
-
-  * Pivotal Cloud Foundry (`*.cf2.piazzageo.io`) || GEOINT's PCF
-  * Deploy Piazza's deps to PCF (e.g. kafka, zk, etc) and make case for non-PCF services.
-  * Build piazza components on GEOINT Jenkins.
-    * Artifacts in NEXUS
-    * Blue/Green deploys to GEOINT PCF.
-
-#### Continue to stand up new services and support.
-
-_As a Piazza dev, I need X to get work done._
-
-  * GeoSHAPE
-  * logstash?
-
-### Future
-
-#### Security
-
-  * HP Fortify
-  * S3 Bucket policies
-  * Secrets sharing
-  * SSL
+* Finish migration:
+  - bf-ui							
+  - pzsvc-lasinfo						
+  - pzsvc-pdal						
+  - pzsvc-twofishes						
+  - pzsvc-us-geospatial-filter				
+  - pzsvc-us-phone-number-filter				
+  - pztest-integration					
+  - refapp-devops						
+  - time-lapse-viewer					
+* Turn off old Cloud Foundry and Jenkins.
+* `jenkins.yml`: control jenkins from your project's repository (no more editing the seed job).
+* PCF Service Controller - dynamically provision resources from `pz-infrastructure`.
+* Blue/Green deploys - I had to disable them for the new environment.
