@@ -40,6 +40,7 @@
     cf services                  # view a list of running services
     cf push                      # push an app to Cloud Foundry
   ```
+* And there is also a [Web UI](https://login.devops.geointservices.io/login).
 
 ### Services
 * Bind a service to your app using the `manifest` to expose `VCAP_SERVICES`:
