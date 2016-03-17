@@ -14,7 +14,7 @@
 ## Credentials
 
 * You'll need to setup an LDAP account with [GEOINT Services](https://accounts.geointservices.io/).
-* Make sure you can access [our organization](https://jenkins.devops.geointservices.io/job/piazza/).
+* Make sure you can access [our Jenkins organization](https://jenkins.devops.geointservices.io/job/piazza/).
 
 ## Cloud Foundry
 
@@ -87,6 +87,7 @@
 * Connect your github repo to jenkins:
   - Go to github.com/venicegeo/<your-repository> and navigate to `Settings -> Webhooks & Services -> Services -> Add service -> Jenkins (GitHub plugin)`
   - Webhook URL: `https://jenkins.devops.geointservices.io/github-webhook/`
+![Jenkins Webhook](./img/jenkins-webhook.png)
 * Create automation scripts:
   - `./ci/` - holds any scripts you'd like jenkins to use in building, testing, and deploying your project.
     - `./ci/<job-name>.sh` corresponds to the `<job-name>` in your Jenkins pipeline.
