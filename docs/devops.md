@@ -146,6 +146,19 @@
 ## Nexus
 
 * We are now storing build artifacts in [Nexus](https://nexus.devops.geointservices.io/#welcome).
+* Accessing locally - configure maven:
+  ```
+    <?xml version="1.0"?>
+    <settings>
+      <servers>
+        <server>
+          <id>nexus</id>
+          <username>YOUR_LDAP_USERNAME</username>
+          <password>YOUR_LDAP_PASSWORD</password>
+        </server>
+      </servers>
+    </settings>
+  ```
 
 ## Backing Services
 
