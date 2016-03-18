@@ -173,8 +173,6 @@
 * Finish migration:
   - bf-ui							
   - pzsvc-twofishes						
-  - pztest-integration					
-  - refapp-devops						
   - time-lapse-viewer					
 * Turn off old Cloud Foundry and Jenkins.
 * `jenkins.yml`: control jenkins from your project's repository (no more editing the seed job).
