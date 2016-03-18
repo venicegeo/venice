@@ -116,6 +116,7 @@
   - Required: `./ci/archive.sh` needs to build your artifact and move it to `./$APP.$EXT`.
 * `stage` - stage jobs automagically stage your app in Cloud Foundry.
   - Required: `manifest.jenkins.yml` - a manifest specific to Jenkins (and the staging environment).
+* `blackbox` - make sure newman is available
 * Static file projects - the automation will expect a `tar.gz` file to push to nexus; it is recommended to do something like: `./ci/archive.sh`:
 
   ```
