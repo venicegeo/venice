@@ -172,11 +172,7 @@
 
 * Finish migration:
   - bf-ui							
-  - pzsvc-lasinfo						
-  - pzsvc-pdal						
   - pzsvc-twofishes						
-  - pzsvc-us-geospatial-filter				
-  - pzsvc-us-phone-number-filter				
   - pztest-integration					
   - refapp-devops						
   - time-lapse-viewer					
