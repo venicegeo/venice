@@ -171,10 +171,6 @@
 
 ## Roadmap
 
-* Finish migration:
-  - bf-ui							
-  - pzsvc-twofishes						
-  - time-lapse-viewer					
 * Turn off old Cloud Foundry and Jenkins.
 * `jenkins.yml`: control jenkins from your project's repository (no more editing the seed job).
 * PCF Service Controller - dynamically provision resources from `pz-infrastructure`.
