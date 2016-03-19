@@ -102,6 +102,8 @@
       ]
     ]
     ```
+* All jobs will only build master by default, but you can specify branches useing the `branch` key in your project map:
+  - `branch: '**'` will build all branches.
 
 ### Special Sauce
 * Versioning - the automation pipeline follows a versioning convention that is coupled with the git revision (i.e. we're not aiming for human readability).
