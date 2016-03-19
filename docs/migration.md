@@ -1,12 +1,14 @@
-# Migrating to the "New Environment"
+# Migrating to FADE
+
+FADE is the "New Environment"
 
 ## Status
 
-* `Webhook?`: changes in your repository will trigger jobs in the new jenkins. *See: [Changing Web Hooks](#changing-your-web-hook).*
-* `Merged?`: I had to create a branch `geoint` in some repositories; merge to master at your leisure (and remove the `branch: geoint` statement associated with your repository in the Jenkins seed job.
-* `Staged?`: is your app running in the new PCF environment?
-* `VCAP?`: are you using the VCAP services provided in the new environment?
-* `Domain?`: is your app domain agnostic? (i.e. is it still referencing the piazzageo.io domain?)
+* **Webhook?**: changes in your repository will trigger jobs in the new jenkins. *See: [Changing Web Hooks](#changing-your-web-hook).*
+* **Merged?**: I may have created a `geoint` branch in your repo; merge to master and update the Jenkins seed job.
+* **Staged?**: is your app running in the new PCF environment?
+* **VCAP?**: are you using the VCAP services provided in the new environment?
+* **Domain?**: is your app domain agnostic? (i.e. is it still referencing the piazzageo.io domain?)
 
 
 
@@ -18,7 +20,7 @@
 | pz-dispatcher                  |          |         | y       |       |         |
 | pz-gateway                     |          |         | y       |       |         |
 | pz-ingest                      |          |         | y       |       |         |
-| pz-jobcommon                   |          |         | n/a     |       |         |
+| pz-jobcommon                   |          |         | n/a     | n/a   |         |
 | pz-jobmanager                  |          |         | y       |       |         |
 | pz-logger                      |          | y       | y       |       |         |
 | pz-search-lite-metadata-ingest |          |         |         |       |         |
@@ -27,7 +29,7 @@
 | pz-search-query                |          |         |         |       |         |
 | pz-servicecontroller           |          |         |         |       |         |
 | pz-services                    | y        | y       | y       | y     | y       |
-| pz-swagger                     | y        | y       | y       |       |         |
+| pz-swagger                     | y        | y       | y       | n/a   |         |
 | pz-uuidgen                     |          | y       | y       |       |         |
 | pz-workflow                    |          | y       | y       |       |         |
 | pzclient-sak                   |          | y       | y       |       |         |
@@ -37,7 +39,7 @@
 | pzsvc-pdal                     |          |         |         |       |         |
 | pzsvc-us-phone-number-filter   |          | y       |         |       |         |
 | pzsvc-us-geospatial-filter     |          | y       |         |       |         |
-| pztest-integration             |          | y       | n/a     |       |         |
+| pztest-integration             |          | y       | n/a     | n/a   |         |
 | time-lapse-viewer              |          | y       |         |       |         |
 
 
