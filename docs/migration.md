@@ -1,9 +1,10 @@
 # Migrating to FADE
 
-FADE is the "New Environment"
+FADE is the "New Environment" ([More details](devops.md)).
 
 ## Status
 
+* **Building?**: all jobs have successfully built in the new jenkins (at least once).
 * **Webhook?**: changes in your repository will trigger jobs in the new jenkins. *See: [Changing Web Hooks](#changing-your-web-hook).*
 * **Merged?**: I may have created a `geoint` branch in your repo; merge to master and update the Jenkins seed job.
 * **Staged?**: is your app running in the new PCF environment?
@@ -12,35 +13,35 @@ FADE is the "New Environment"
 
 
 
-| App                            | Webhook? | Merged? | Staged? | VCAP? | Domain? |
-|--------------------------------|:--------:|:-------:|:-------:|:-----:|:-------:|
-| bf-ui                          |          | y       |         |       |         |
-| pz-access                      |          |         | y       |       |         |
-| pz-discover                    | y        | y       | y       |       |         |
-| pz-dispatcher                  |          |         | y       |       |         |
-| pz-gateway                     |          |         | y       |       |         |
-| pz-ingest                      |          |         | y       |       |         |
-| pz-jobcommon                   |          |         | n/a     | n/a   |         |
-| pz-jobmanager                  |          |         | y       |       |         |
-| pz-logger                      |          | y       | y       |       |         |
-| pz-search-lite-metadata-ingest |          |         |         |       |         |
-| pz-search-lite-query           |          |         |         |       |         |
-| pz-search-metadata-ingest      |          |         |         |       |         |
-| pz-search-query                |          |         |         |       |         |
-| pz-servicecontroller           |          |         |         |       |         |
-| pz-services                    | y        | y       | y       | y     | y       |
-| pz-swagger                     | y        | y       | y       | n/a   |         |
-| pz-uuidgen                     |          | y       | y       |       |         |
-| pz-workflow                    |          | y       | y       |       |         |
-| pzclient-sak                   |          | y       | y       |       |         |
-| pzsvc-coordinate-conversion    |          | y       | y       |       |         |
-| pzsvc-gdaldem                  |          |         | y       |       |         |
-| pzsvc-lasinfo                  |          |         | y       |       |         |
-| pzsvc-pdal                     |          |         |         |       |         |
-| pzsvc-us-phone-number-filter   |          | y       |         |       |         |
-| pzsvc-us-geospatial-filter     |          | y       |         |       |         |
-| pztest-integration             |          | y       | n/a     | n/a   |         |
-| time-lapse-viewer              |          | y       |         |       |         |
+| App                            | Building? | Webhook? | Merged? | Staged? | VCAP? | Domain? |
+|--------------------------------|:---------:|:--------:|:-------:|:-------:|:-----:|:-------:|
+| bf-ui                          |           |          | y       |         |       |         |
+| pz-access                      | y         |          |         | y       |       |         |
+| pz-discover                    | y         | y        | y       | y       |       |         |
+| pz-dispatcher                  | y         |          |         | y       |       |         |
+| pz-gateway                     | y         |          |         | y       |       |         |
+| pz-ingest                      | y         |          |         | y       |       |         |
+| pz-jobcommon                   | y         |          |         | n/a     | n/a   |         |
+| pz-jobmanager                  | y         |          |         | y       |       |         |
+| pz-logger                      | y         |          | y       | y       |       |         |
+| pz-search-lite-metadata-ingest |           |          |         |         |       |         |
+| pz-search-lite-query           |           |          |         |         |       |         |
+| pz-search-metadata-ingest      |           |          |         |         |       |         |
+| pz-search-query                |           |          |         |         |       |         |
+| pz-servicecontroller           |           |          |         |         |       |         |
+| pz-services                    | y         | y        | y       | y       | y     | y       |
+| pz-swagger                     | y         | y        | y       | y       | n/a   |         |
+| pz-uuidgen                     | y         |          | y       | y       |       |         |
+| pz-workflow                    | y         |          | y       | y       |       |         |
+| pzclient-sak                   | y         |          | y       | y       |       |         |
+| pzsvc-coordinate-conversion    |           |          | y       | y       |       |         |
+| pzsvc-gdaldem                  |           |          |         | y       |       |         |
+| pzsvc-lasinfo                  |           |          |         | y       |       |         |
+| pzsvc-pdal                     |           |          |         |         |       |         |
+| pzsvc-us-phone-number-filter   |           |          | y       |         |       |         |
+| pzsvc-us-geospatial-filter     |           |          | y       |         |       |         |
+| pztest-integration             |           |          | y       | n/a     | n/a   |         |
+| time-lapse-viewer              |           |          | y       |         |       |         |
 
 
 ## Changing Your Web Hook
