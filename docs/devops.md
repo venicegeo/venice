@@ -59,8 +59,8 @@
   - `pz-kafka`
   - `pz-postgres`
   - `pz-zookeeper`
-  - `pz-mongodb` - *Note: currently waiting for FADE team to resolve an issue.*
-  - `pz-elasticsearch` - *COMING SOON*
+  - `pz-mongodb`
+  - `pz-elasticsearch`
 * Sample `VCAP_SERVICES` json:
 
   ```
