@@ -16,13 +16,13 @@ FADE is the "New Environment" ([More details](devops.md)).
 | App                            | Building? | Webhook? | Merged? | Staged? | VCAP? | Domain? |
 |--------------------------------|:---------:|:--------:|:-------:|:-------:|:-----:|:-------:|
 | bf-ui                          |           |          | y       |         |       |         |
-| pz-access                      | y         |          |         | y       |       |         |
+| pz-access                      | y         | y        | y       | y       | y     |         |
 | pz-discover                    | y         | y        | y       | y       |       |         |
-| pz-dispatcher                  | y         |          |         | y       |       |         |
-| pz-gateway                     | y         |          |         | y       |       |         |
-| pz-ingest                      | y         |          |         | y       |       |         |
-| pz-jobcommon                   | y         |          |         | n/a     | n/a   |         |
-| pz-jobmanager                  | y         |          |         | y       |       |         |
+| pz-dispatcher                  | y         | y        | y       | y       | y     |         |
+| pz-gateway                     | y         | y        | y       | y       | y     |         |
+| pz-ingest                      | y         | y        | y       | y       | y     |         |
+| pz-jobcommon                   | y         | y        | y       | n/a     | n/a   |         |
+| pz-jobmanager                  | y         | y        | y       | y       | y     |         |
 | pz-logger                      | y         |          | y       | y       |       |         |
 | pz-search-lite-metadata-ingest |           |          |         |         |       |         |
 | pz-search-lite-query           |           |          |         |         |       |         |
