@@ -15,7 +15,7 @@ FADE is the "New Environment" ([More details](devops.md)).
 
 | App                            | Building? | Webhook? | Merged? | Staged? | VCAP? | Domain? |
 |--------------------------------|:---------:|:--------:|:-------:|:-------:|:-----:|:-------:|
-| bf-ui                          |           |          | y       |         |       |         |
+| bf-ui                          | y         | y        | y       | y       |       |         |
 | pz-access                      | y         | y        | y       | y       | y     |         |
 | pz-discover                    | y         | y        | y       | y       |       |         |
 | pz-dispatcher                  | y         | y        | y       | y       | y     |         |
@@ -32,14 +32,12 @@ FADE is the "New Environment" ([More details](devops.md)).
 | pz-uuidgen                     | y         | y        | y       | y       |       | y       |
 | pz-workflow                    | y         |          | y       | y       |       |         |
 | pzclient-sak                   | y         |          | y       | y       |       |         |
-| pzsvc-coordinate-conversion    |           |          | y       | y       |       |         |
+| pzsvc-coordinate-conversion    | y         | y        | y       | y       |       |         |
 | pzsvc-gdaldem                  |           |          |         | y       |       |         |
 | pzsvc-lasinfo                  |           |          |         | y       |       |         |
 | pzsvc-pdal                     |           |          |         |         |       |         |
-| pzsvc-us-phone-number-filter   |           |          | y       |         |       |         |
-| pzsvc-us-geospatial-filter     |           |          | y       |         |       |         |
 | pztest-integration             |           |          | y       | n/a     | n/a   |         |
-| time-lapse-viewer              |           |          | y       |         |       |         |
+| time-lapse-viewer              |           | y        | y       |         |       |         |
 
 
 ## Changing Your Web Hook
@@ -58,15 +56,3 @@ FADE is the "New Environment" ([More details](devops.md)).
 * pz-workflow
 * pz-search-metadata-ingest
 * pz-search-query
-
-### Grails + new java buildpack issues
-* bf-ui
-* pzsvc-coordinate-conversion
-* pzsvc-us-phone-number-filter
-* pzsvc-us-geospatial-filter
-* time-lapse-viewer
-
-### Out of memory
-* pzsvc-gdaldem
-* pzsvc-lasinfo
-* pzsvc-pdal
