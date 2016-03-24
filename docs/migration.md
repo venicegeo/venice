@@ -23,15 +23,13 @@ FADE is the "New Environment" ([More details](devops.md)).
 | pz-ingest                      | y         | y        | y       | y       | y     |         |
 | pz-jobcommon                   | y         | y        | y       | n/a     | n/a   |         |
 | pz-jobmanager                  | y         | y        | y       | y       | y     |         |
-| pz-logger                      | y         |          | y       | y       |       |         |
-| pz-search-lite-metadata-ingest |           |          |         |         |       |         |
-| pz-search-lite-query           |           |          |         |         |       |         |
+| pz-logger                      | y         | y        | y       | y       |       | y       |
 | pz-search-metadata-ingest      |           |          |         |         |       |         |
 | pz-search-query                |           |          |         |         |       |         |
-| pz-servicecontroller           |           |          |         |         |       |         |
+| pz-servicecontroller           | y         | y        |         | y       |       |         |
 | pz-services                    | y         | y        | y       | y       | y     | y       |
 | pz-swagger                     | y         | y        | y       | y       | n/a   |         |
-| pz-uuidgen                     | y         |          | y       | y       |       |         |
+| pz-uuidgen                     | y         | y        | y       | y       |       | y       |
 | pz-workflow                    | y         |          | y       | y       |       |         |
 | pzclient-sak                   | y         |          | y       | y       |       |         |
 | pzsvc-coordinate-conversion    |           |          | y       | y       |       |         |
