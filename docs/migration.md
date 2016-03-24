@@ -30,7 +30,7 @@ FADE is the "New Environment" ([More details](devops.md)).
 | pz-services                    | y         | y        | y       | y       | y     | y       |
 | pz-swagger                     | y         | y        | y       | y       | n/a   |         |
 | pz-uuidgen                     | y         | y        | y       | y       |       | y       |
-| pz-workflow                    | y         |          | y       | y       |       |         |
+| pz-workflow                    | y         | y        | y       | y       |       |         |
 | pzclient-sak                   | y         |          | y       | y       |       |         |
 | pzsvc-coordinate-conversion    | y         | y        | y       | y       |       |         |
 | pzsvc-gdaldem                  |           |          |         | y       |       |         |
