@@ -51,3 +51,22 @@ FADE is the "New Environment" ([More details](devops.md)).
 1. Change the **`Jenkins hook url`** to `https://jenkins.devops.geointservices.io/github-webhook/`
 1. Click **`Update service`**
 ![Jenkins Webhook](./img/jenkins-webhook.png)
+
+## BLOCKED!
+
+### Elasticsearch issues
+* pz-workflow
+* pz-search-metadata-ingest
+* pz-search-query
+
+### Grails + new java buildpack issues
+* bf-ui
+* pzsvc-coordinate-conversion
+* pzsvc-us-phone-number-filter
+* pzsvc-us-geospatial-filter
+* time-lapse-viewer
+
+### Out of memory
+* pzsvc-gdaldem
+* pzsvc-lasinfo
+* pzsvc-pdal
