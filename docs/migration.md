@@ -26,7 +26,7 @@ FADE is the "New Environment" ([More details](devops.md)).
 | pz-logger                      | y         | y        | y       | y       |       | y       |
 | pz-search-metadata-ingest      |           |          |         |         |       |         |
 | pz-search-query                |           |          |         |         |       |         |
-| pz-servicecontroller           | y         | y        |         | y       |       |         |
+| pz-servicecontroller           | y         | y        | y       | y       |       |         |
 | pz-services                    | y         | y        | y       | y       | y     | y       |
 | pz-swagger                     | y         | y        | y       | y       | n/a   |         |
 | pz-uuidgen                     | y         | y        | y       | y       |       | y       |
