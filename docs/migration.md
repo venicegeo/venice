@@ -35,9 +35,9 @@ FADE is the "New Environment" ([More details](devops.md)).
 | pzsvc-coordinate-conversion    | y         | y        | y       | y       |       |         |
 | pzsvc-gdaldem                  |           |          |         | y       |       |         |
 | pzsvc-lasinfo                  |           |          |         | y       |       |         |
-| pzsvc-pdal                     |           |          |         |         |       |         |
-| pztest-integration             |           |          | y       | n/a     | n/a   |         |
-| time-lapse-viewer              |           | y        | y       |         |       |         |
+| pzsvc-pdal                     | y         | y        |         | y       |       |         |
+| pztest-integration             |           | y        | y       | n/a     | n/a   |         |
+| time-lapse-viewer              | y         | y        | y       |         |       |         |
 
 
 ## Changing Your Web Hook
