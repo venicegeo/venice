@@ -1,4 +1,4 @@
-# venice
+Welcome to the Venice Project, an open source community focused on building cloud-based frameworks, tools, applications, and other initiatives in support of Geospatial Intelligence (GEOINT) needs.
 
-- [devops](./docs/devops.md)
-- [Piazza Core Services](https://github.com/venicegeo/venice/wiki/PiazzaCoreServices)
+Please go to our [wiki pages](https://github.com/venicegeo/venice/wiki/) for more information.
+
