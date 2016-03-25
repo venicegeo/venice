@@ -65,19 +65,19 @@
 
   ```
     {
-     "VCAP_SERVICES": {
-      "user-provided": [
-       {
-        "credentials": {
-         "bucket": "pz-blobstore-staging"
-        },
-        "label": "user-provided",
-        "name": "pz-blobstore",
-        "syslog_drain_url": "",
-        "tags": []
-       }
-      ]
-     }
+      "VCAP_SERVICES": {
+        "user-provided": [
+          {
+            "credentials": {
+              "bucket": "pz-blobstore-staging"
+            },
+            "label": "user-provided",
+            "name": "pz-blobstore",
+            "syslog_drain_url": "",
+            "tags": []
+          }
+        ]
+      }
     }
   ```
 
