@@ -3,12 +3,10 @@
 * [Credentials](#credentials)
 * [Cloud Foundry (The Platform)](#cloud-foundry)
   - [Local Development](#local-development)
-  - [Services](#services)
+  - [Backing Services](#services)
 * [Jenkins (Automation)](#jenkins)
   - [Special Features](#special-sauce)
-  - [Migrating](#migrating)
 * [Nexus (Artifact Repository)](#nexus)
-* [Backing Services](#backing-services)
 * [Roadmap](#roadmap)
 
 ## Credentials
@@ -24,7 +22,7 @@
 
   ```
     cf login -a https://api.devops.geointservices.io
-    # Note: email = your LDAP username
+    # Note: for `email`, use your LDAP username
     cf target -o piazza -s simulator-dev
   ```
 
@@ -34,11 +32,13 @@
 
   ```
     cf apps                      # list all apps
-    cf app pz-logger             # individual app info
-    cf logs --recent pz-gateway  # show recent logs for an app
-    cf logs pz-gateway           # tail and follow logs for an app
-    cf services                  # view a list of running services
+    cf app <app>                 # individual app info
+    cf env                       # view an apps current environment variables
+    cf logs --recent <app>       # show recent logs for an app
+    cf logs <app>                # tail and follow logs for an app
+    cf marketplace               # view a list of available marketplace services
     cf push                      # push an app to Cloud Foundry
+    cf services                  # view a list of running services
   ```
 * And there is also a [Web UI](https://login.devops.geointservices.io/login).
 
@@ -46,10 +46,9 @@
 * Bind a service to your app using the `manifest` to expose `VCAP_SERVICES`:
 
   ```
-    applications:
-      services:
-        - pz-postgres
-        - pz-blobstore
+    services:
+      - pz-postgres
+      - pz-blobstore
   ```
 
 * Available services:
@@ -81,9 +80,44 @@
     }
   ```
 
+* Backing Services come from one of three possible locations:
+  - AWS FADE: LDAP.
+  - pz-infrastructure: our VPC.
+  - PCF Marketplace: `cf marketplace`
+
+#### Using Services Locally
+
+Our backing services are only accessible from 2 locations: Cloud Foundry and our bastion host. If you want to interact with a backing service from your local machine, you'll have to set up an ssh tunnel through one of those two locations.
+
+##### Via Cloud Foundry
+* Bind a service to your app, or find an app that is already bound to the service you'd like to access.
+* Find the ip and port of the service in the `VCAP_SERVICES` environment variable: `cf env <app>`
+* Run the following command:
+
+  ```
+    cf ssh <app> -N -L 3333:<ip-address>:<port>
+  ```
+* You should now be able to interact with the service via `localhost:3333`.
+
+##### Via Bastion
+* Generate an ssh key-pair:
+
+  ```
+    ssh-keygen -q -t rsa -b 4096 -f $HOME/.ssh/venice.pem -P '' -C <your-email>
+  ```
+
+* Copy the contents of `$HOME/.ssh/venice.pem.pub` and send them to @sbaxter or @wgb.
+* We'll send you some information about the network...
+* Then use the following command to set up your tunnel:
+
+  ```
+    ssh -f -N -i $HOME/.ssh/venice.pem -o ExitOnForwardFailure=yes -p <SSH_PORT> -L 3333:<INTERNAL_DNS>:<PORT> <SSH_USER>@<BASTION>
+  ```
+* You should now be able to interact with the service via `localhost:3333`
+
 ## Jenkins
 
-* All jobs are generated and maintained using the [jenkins seed job](https://github.com/venicegeo/jenkins/tree/geoint).
+* All jobs are generated and maintained using the [jenkins seed job](https://github.com/venicegeo/jenkins).
 * All jobs publish status to [slack](https://venicegeo.slack.com/messages/jenkins/).
 * Connect your github repo to jenkins:
   - Go to github.com/venicegeo/<your-repository> and navigate to `Settings -> Webhooks & Services -> Services -> Add service -> Jenkins (GitHub plugin)`
@@ -134,22 +168,15 @@
     tar -czf $APP.$EXT -C $root <directory-that-contains-the-static-files>
   ```
 
-* Binary projects (I'm looking at you `golang`) - `EXT=bin` let's the automation know we're dealing with an executable.
+* Binary projects (I'm looking at you `golang`) - `EXT=bin` lets the automation know we're dealing with an executable.
 * The seed job will organize your project's jobs into a folder:
 ![Jenkins Build Dashboard](./img/jenkins-dashboard.png)
 * The seed job will create a pipeline view for you:
 ![Jenkins Build Pipeline](./img/jenkins-pipeline.png)
 
-### Migrating
-
-* Create new build scripts in `./ci`
-  - We are storing scripts in `./ci` (not `./scripts`) to allow for both environments to function in parallel.
-  - The functionality of `cf-deliver` can be accessed using the `stage` keyword.
-  - Switch webooks to point to teh geoint jenkins.
-
 ## Nexus
 
-* We are now storing build artifacts in [Nexus](https://nexus.devops.geointservices.io/#welcome).
+* We store build artifacts in [Nexus](https://nexus.devops.geointservices.io/).
 * Accessing locally - configure maven:
   ```
     <?xml version="1.0"?>
@@ -164,16 +191,8 @@
     </settings>
   ```
 
-## Backing Services
-
-* Backing Services come from one of three possible locations:
-  - AWS FADE: LDAP.
-  - pz-infrastructure: our VPC.
-  - PCF Marketplace: `cf marketplace`
-
 ## Roadmap
 
-* Turn off old Cloud Foundry and Jenkins.
 * `jenkins.yml`: control jenkins from your project's repository (no more editing the seed job).
 * PCF Service Controller - dynamically provision resources from `pz-infrastructure`.
 * Blue/Green deploys - I had to disable them for the new environment.
