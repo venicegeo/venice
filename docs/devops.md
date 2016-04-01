@@ -53,7 +53,6 @@
 
 * Available services:
   - `pz-blobstore` - s3 bucket
-  - `pz-discover` - legacy service discovery
   - `pz-geoserver`
   - `pz-kafka`
   - `pz-postgres`
