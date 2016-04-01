@@ -105,7 +105,7 @@ Our backing services are only accessible from 2 locations: Cloud Foundry and our
     ssh-keygen -q -t rsa -b 4096 -f $HOME/.ssh/venice.pem -P '' -C <your-email>
   ```
 
-* Copy the contents of `$HOME/.ssh/venice.pem.pub` and send them to @sbaxter or @wgb.
+* Copy the contents of `$HOME/.ssh/venice.pem.pub` and send them to [@sbaxter](https://github.com/sbaxter) or [@wgb](https://github.com/wgb).
 * We'll send you some information about the network...
 * Then use the following command to set up your tunnel:
 
