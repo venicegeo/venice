@@ -116,7 +116,7 @@ Our backing services are only accessible from 2 locations: Cloud Foundry and our
 * To tear the tunnel down:
 
   ```
-    ps -ef | grep venice.pem | grep -v grep | awk '{print $2}' | xargs kill -9 
+    ps -ef | grep venice.pem | grep -v grep | awk '{print $2}' | xargs kill -9
   ```
 
 ## Jenkins
@@ -182,6 +182,7 @@ Our backing services are only accessible from 2 locations: Cloud Foundry and our
 
 * We store build artifacts in [Nexus](https://nexus.devops.geointservices.io/).
 * Accessing locally - configure maven:
+
   ```
     <?xml version="1.0"?>
     <settings>
