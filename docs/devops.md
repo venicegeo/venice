@@ -113,6 +113,11 @@ Our backing services are only accessible from 2 locations: Cloud Foundry and our
     ssh -f -N -i $HOME/.ssh/venice.pem -o ExitOnForwardFailure=yes -p <SSH_PORT> -L 3333:<INTERNAL_DNS>:<PORT> <SSH_USER>@<BASTION>
   ```
 * You should now be able to interact with the service via `localhost:3333`
+* To tear the tunnel down:
+
+  ```
+    ps -ef | grep venice.pem | grep -v grep | awk '{print $2}' | xargs kill -9 
+  ```
 
 ## Jenkins
 
