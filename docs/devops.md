@@ -97,6 +97,7 @@ Our backing services are only accessible from 2 locations: Cloud Foundry and our
     cf ssh <app> -N -L 3333:<ip-address>:<port>
   ```
 * You should now be able to interact with the service via `localhost:3333`.
+* _Note: you can tunnel through any running PCF app to our backing services (the service does not need to be bound to the app), but you'll need to know the address!_
 
 ##### Via Bastion
 * Generate an ssh key-pair:
