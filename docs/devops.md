@@ -26,7 +26,7 @@
     cf target -o piazza -s simulator-dev
   ```
 
-* The `simulator-dev` space is the sandbox environment for piazza devs.
+* The `dev` space is the sandbox environment for piazza devs.
 * `simulator-stage` is the space jenkins will use to stage apps.
 * Useful commands:
 
@@ -54,6 +54,7 @@
 * Available services:
   - `pz-blobstore` - s3 bucket
   - `pz-geoserver`
+  - `pz-geoserver-cluster` - geoserver + s3 + postGIS
   - `pz-kafka`
   - `pz-postgres`
   - `pz-zookeeper`
@@ -155,8 +156,9 @@ Our backing services are only accessible from 2 locations: Cloud Foundry and our
 
 * `archive` - archive jobs automagically push your artifact to nexus.
   - Required: `./ci/archive.sh` needs to build your artifact and move it to `./$APP.$EXT`.
-* `stage` - stage jobs automagically stage your app in Cloud Foundry.
+* `stage` - stage jobs automagically in Cloud Foundry.
   - Required: `manifest.jenkins.yml` - a manifest specific to Jenkins (and the staging environment).
+* `deploy` - complete the blue/green deploy for an app.
 * `blackbox` - make sure newman is available
 * Static file projects - the automation will expect a `tar.gz` file to push to nexus; it is recommended to do something like: `./ci/archive.sh`:
 
@@ -201,4 +203,3 @@ Our backing services are only accessible from 2 locations: Cloud Foundry and our
 
 * `jenkins.yml`: control jenkins from your project's repository (no more editing the seed job).
 * PCF Service Controller - dynamically provision resources from `pz-infrastructure`.
-* Blue/Green deploys - I had to disable them for the new environment.
