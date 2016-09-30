@@ -30,18 +30,14 @@ limitations under the License.
 package main
 
 import (
+	"bufio"
 	"fmt"
-	"io/ioutil"
-	"log"
+	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
 	"time"
-
-	"golang.org/x/oauth2"
-
-	"github.com/google/go-github/github"
 )
 
 const DEBUG = false
@@ -50,6 +46,8 @@ const VENICE = "venicegeo"
 var NOW = time.Now()
 var WHO = "mpgerlek"
 var EMAIL = "mpg@flaxen.com"
+
+const giturl = "http://github.com/venicegeo"
 
 var reposWhiteList = []string{
 	"bf-handle",
@@ -72,19 +70,67 @@ var reposWhiteList = []string{
 	"pz-uuidgen",
 	"pz-workflow",
 	"pzsvc-exec",
+	"pzsvc-hello",
 	"pzsvc-image-catalog",
 	"pzsvc-lib",
 	"pzsvc-ossim",
 }
 
-var extWhiteList = []string{
+var extCheckList = []string{
 	".go",
+	".java",
+	".js",
+	".py",
+}
+
+var extIgnoreList = []string{
+	".backup",
+	".bat",
+	".conf",
+	".config",
+	".css",
+	".docx",
+	".eot",
+	".geojson",
+	".gif",
+	".gz",
+	".go",
+	".handlebars",
+	".html",
+	".ico",
+	".iml",
+	".java",
+	".jpg",
+	".js",
+	".json",
+	".laz",
+	".less",
 	".lock",
+	".map",
 	".md",
+	".opts",
+	".pdf",
+	".per",
+	".pkl",
+	".png",
+	".postman_collection",
+	".pptx",
+	".properties",
+	".py",
+	".README",
 	".sh",
+	".st",
+	".svg",
+	".tif",
+	".ttf",
 	".txt",
+	".wkt",
+	".woff",
+	".woff2",
+	".xml",
 	".yaml",
 	".yml",
+	".zip",
 }
 
 func contains(array []string, item string) bool {
@@ -100,11 +146,21 @@ func main() {
 	//log.Printf("%#v", os.Args)
 
 	if len(os.Args) == 2 && os.Args[1] == "-update" {
-		DoUpdate()
+		err := DoUpdate()
+		if err != nil {
+			fmt.Printf("aborting: %s\n", err.Error())
+		}
+	} else if len(os.Args) == 2 && os.Args[1] == "-check" {
+		for _, repo := range reposWhiteList {
+			err := DoCheck(repo)
+			if err != nil {
+				fmt.Printf("aborting: %s\n", err.Error())
+			}
+		}
 	} else if len(os.Args) == 3 && os.Args[1] == "-check" {
 		err := DoCheck(os.Args[2])
 		if err != nil {
-			log.Fatalf("ERROR: %s", err.Error())
+			fmt.Printf("aborting: %s\n", err.Error())
 		}
 	} else {
 		s := `usage:  $ repocheck -update
@@ -179,10 +235,37 @@ func inspectDirectory(dirName string) error {
 	return nil
 }
 
+func hasCopyright(f *os.File) (bool, error) {
+	buf := make([]byte, 4096)
+
+	r := bufio.NewReader(f)
+	_, err := r.Read(buf)
+	if err != nil && err != io.EOF {
+		return false, err
+	}
+
+	s := string(buf)
+
+	ok := strings.Contains(s, "Copyright 2016, RadiantBlue Technologies, Inc.")
+	if !ok {
+		return false, nil
+	}
+	ok = strings.Contains(s, "Apache License, Version 2.0")
+	if !ok {
+		return false, nil
+	}
+	ok = strings.Contains(s, "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND")
+	if !ok {
+		return false, nil
+	}
+
+	return true, err
+}
+
 func inspectFile(fileName string) error {
 	//fmt.Printf("...f %s\n", fileName)
 
-	if isDotFile(fileName) {
+	if isDotFile(fileName) || fileName[len(fileName)-1] == '~' {
 		return nil
 	}
 
@@ -195,87 +278,82 @@ func inspectFile(fileName string) error {
 	if err != nil {
 		return err
 	}
-	f.Close()
+	defer f.Close()
 
 	if fileInfo.IsDir() {
 		return inspectDirectory(fileName)
-	} else {
-		ext := filepath.Ext(fileName)
-		if ext != "" {
+	}
 
-			if !contains(extWhiteList, ext) {
-				fmt.Printf("%s: unknown suffix\n", fileName)
-			}
-		}
+	ext := filepath.Ext(fileName)
+	if ext == "" {
+		return nil
+	}
+
+	if !contains(extIgnoreList, ext) {
+		fmt.Printf("%s: unknown suffix '%s'\n", fileName, ext)
+		return nil
+	}
+
+	if !contains(extCheckList, ext) {
+		return nil
+	}
+
+	ok, err := hasCopyright(f)
+	if err != nil {
+		return err
+	}
+	if !ok {
+		fmt.Printf("%s: no copyright\n", fileName)
 	}
 
 	return nil
 }
 
-func DoUpdate() {
-	apiKey, err := getApiKey()
+func fileExists(file string) (bool, error) {
+	_, err := os.Stat(file)
 	if err != nil {
-		log.Fatalf("Failed to get API key: %s", err)
-	}
-
-	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: apiKey},
-	)
-	tc := oauth2.NewClient(oauth2.NoContext, ts)
-
-	client := github.NewClient(tc)
-	//log.Printf("client: %#v", client)
-
-	// list all repositories for the authenticated user
-	repos, err := getRepoNames(client)
-
-	for _, repo := range repos {
-		if contains(reposWhiteList, *repo.FullName) {
-			exec.Command("ls")
-			// if present, update
-			// else download
-		} else if contains(reposBlackList, *repo.FullName) {
-			// if present, error out
-		} else {
-			// new repo name, error out
+		if os.IsNotExist(err) {
+			return false, nil
 		}
-		fmt.Printf("    \"%s\",\n", *repo.FullName)
+		// other error
+		return false, err
 	}
+	return true, nil
 }
 
-func getApiKey() (string, error) {
-	home := os.Getenv("HOME")
-	if home == "" {
-		return "", fmt.Errorf("getApiKey: $HOME not found")
+func DoUpdate() error {
+
+	for _, repo := range reposWhiteList {
+
+		exists, err := fileExists(repo)
+		if err != nil {
+			return err
+		}
+
+		if exists {
+			fmt.Printf("...syncing %s\n", repo)
+			out, err := exec.Command("cd", repo, "&&", "git", "pull").Output()
+			fmt.Printf("OUT: %s\n", out)
+			if err != nil {
+				fmt.Printf("ERR: %s\n", err.Error())
+				return err
+			}
+		} else {
+			fmt.Printf("...cloning %s\n", repo)
+			out, err := exec.Command("pwd").Output()
+			fmt.Printf("OUT: %s\n", out)
+			if err != nil {
+				fmt.Printf("ERR: %s\n", err.Error())
+				return err
+			}
+			out, err = exec.Command("git", "clone", giturl+"/"+repo).Output()
+			fmt.Printf("OUT: %s\n", out)
+			if err != nil {
+				fmt.Printf("ERR: %s\n", err.Error())
+				return err
+			}
+		}
 	}
 
-	key, err := ioutil.ReadFile(home + "/.git-token")
-	if err != nil {
-		return "", fmt.Errorf("getApiKey: %s", err)
-	}
-
-	s := strings.TrimSpace(string(key))
-	//log.Printf("API Key: %s", s)
-
-	return s, nil
-}
-
-func getRepoNames(client *github.Client) ([]*github.Repository, error) {
-	opts0 := github.ListOptions{
-		Page:    0,
-		PerPage: 512,
-	}
-	opts := &github.RepositoryListByOrgOptions{
-		ListOptions: opts0,
-		Type:        "all",
-	}
-
-	repos, _, err := client.Repositories.ListByOrg(VENICE, opts)
-	if err != nil {
-		return nil, fmt.Errorf("getRepoNames: %s", err)
-	}
-
-	//log.Printf("%#v", repos)
-
-	return repos, nil
+	return nil
 }
