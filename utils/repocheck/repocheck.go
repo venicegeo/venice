@@ -52,6 +52,7 @@ const giturl = "http://github.com/venicegeo"
 var reposWhiteList = []string{
 	"bf-handle",
 	"bf_TidePrediction",
+	"bf-ui",
 	"geojson-geos-go",
 	"geojson-go",
 	"pz-access",
@@ -63,10 +64,11 @@ var reposWhiteList = []string{
 	"pz-jobcommon",
 	"pz-jobmanager",
 	"pz-logger",
+	"pz-metrics",
 	"pz-sak",
 	"pz-search",
 	"pz-servicecontroller",
-	"pz-swagger",
+	//"pz-swagger",		// skip this, not really ours
 	"pz-uuidgen",
 	"pz-workflow",
 	"pzsvc-exec",
@@ -133,6 +135,10 @@ var extIgnoreList = []string{
 	".zip",
 }
 
+var specialIgnoreList = []string{
+	"bf-ui/node_modules/",
+}
+
 func contains(array []string, item string) bool {
 	for _, i := range array {
 		if i == item {
@@ -188,12 +194,13 @@ func DoCheck(repoName string) error {
 	if !contains(files, "README") &&
 		!contains(files, "README.txt") &&
 		!contains(files, "README.md") {
-		fmt.Printf("%s: no README", repoName)
+		fmt.Printf("%s: no README\n", repoName)
 	}
 
 	if !contains(files, "LICENSE") &&
-		!contains(files, "LICENSE.txt") {
-		fmt.Printf("%s: no LICENSE", repoName)
+		!contains(files, "LICENSE.txt") &&
+		!contains(files, "LICENSE.md") {
+		fmt.Printf("%s: no LICENSE\n", repoName)
 	}
 
 	err = inspectDirectory(repoName)
@@ -267,6 +274,12 @@ func inspectFile(fileName string) error {
 
 	if isDotFile(fileName) || fileName[len(fileName)-1] == '~' {
 		return nil
+	}
+
+	for _, ignorable := range specialIgnoreList {
+		if strings.Contains(fileName, ignorable) {
+			return nil
+		}
 	}
 
 	f, err := os.Open(fileName)
