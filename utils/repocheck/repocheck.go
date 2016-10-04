@@ -83,6 +83,8 @@ var extCheckList = []string{
 	".java",
 	".js",
 	".py",
+	".ts",
+	".tsx",
 }
 
 var extIgnoreList = []string{
@@ -124,6 +126,8 @@ var extIgnoreList = []string{
 	".st",
 	".svg",
 	".tif",
+	".ts",
+	".tsx",
 	".ttf",
 	".txt",
 	".wkt",
