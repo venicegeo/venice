@@ -141,6 +141,25 @@ var extIgnoreList = []string{
 
 var specialIgnoreList = []string{
 	"bf-ui/node_modules/",
+	"pz-sak/public/js/lib/abn_tree_directive.js",
+	"pz-sak/public/js/lib/angular-animate.js",
+	"pz-sak/public/js/lib/angular-cookies.min.js",
+	"pz-sak/public/js/lib/angular-mocks-1.5.5.js",
+	"pz-sak/public/js/lib/angular-openlayers-directive.js",
+	"pz-sak/public/js/lib/angular-sanitize.js",
+	"pz-sak/public/js/lib/angular-spinner.min.js",
+	"pz-sak/public/js/lib/angular-ui-router.js",
+	"pz-sak/public/js/lib/angular.js",
+	"pz-sak/public/js/lib/angular.min.js",
+	"pz-sak/public/js/lib/bootstrap.min.js",
+	"pz-sak/public/js/lib/dirPagination.js",
+	"pz-sak/public/js/lib/jquery.min.js",
+	"pz-sak/public/js/lib/moment.min.js",
+	"pz-sak/public/js/lib/ol-debug.js",
+	"pz-sak/public/js/lib/ol.js",
+	"pz-sak/public/js/lib/OpenLayersLite-formats.js",
+	"pz-sak/public/js/lib/spin.js",
+	"pz-sak/public/js/lib/toaster.js",
 }
 
 func contains(array []string, item string) bool {
