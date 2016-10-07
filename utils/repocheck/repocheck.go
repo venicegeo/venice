@@ -93,7 +93,9 @@ var extCheckList = []string{
 
 var extIgnoreList = []string{
 	".backup",
+	".bak",
 	".bat",
+	".cmd",
 	".conf",
 	".config",
 	".css",
@@ -116,6 +118,8 @@ var extIgnoreList = []string{
 	".lock",
 	".map",
 	".md",
+	".off",
+	".offf",
 	".opts",
 	".pdf",
 	".per",
