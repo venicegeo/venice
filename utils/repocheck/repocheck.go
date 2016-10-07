@@ -66,7 +66,8 @@ var reposWhiteList = []string{
 	"pz-logger",
 	"pz-metrics",
 	"pz-sak",
-	"pz-search",
+	"pz-search-metadata-ingest",
+	"pz-search-query",
 	"pz-servicecontroller",
 	//"pz-swagger",		// skip this, not really ours
 	"pz-uuidgen",
@@ -76,6 +77,9 @@ var reposWhiteList = []string{
 	"pzsvc-image-catalog",
 	"pzsvc-lib",
 	"pzsvc-ossim",
+	"pzsvc-lib",
+	"pzsvc-ossim",
+	"pzsvc-preview-generator",
 }
 
 var extCheckList = []string{
@@ -140,7 +144,10 @@ var extIgnoreList = []string{
 }
 
 var specialIgnoreList = []string{
+	"bf_TidePrediction/test/__init__.py",
 	"bf-ui/node_modules/",
+	"bf-ui/src/openlayers.d.ts",
+	"pz-sak/public/js/lib/",
 }
 
 func contains(array []string, item string) bool {
@@ -207,6 +214,10 @@ func DoCheck(repoName string) error {
 		fmt.Printf("%s: no LICENSE\n", repoName)
 	}
 
+	if !contains(files, ".about.yml") {
+		fmt.Printf("%s: no .about.yml\n", repoName)
+	}
+
 	err = inspectDirectory(repoName)
 	if err != nil {
 		return err
@@ -224,6 +235,10 @@ func inspectDirectory(dirName string) error {
 	//fmt.Printf("...d %s\n", dirName)
 
 	if isDotFile(dirName) {
+		return nil
+	}
+
+	if strings.HasSuffix(dirName, "/vendor") {
 		return nil
 	}
 
@@ -349,7 +364,7 @@ func DoUpdate() error {
 
 		if exists {
 			fmt.Printf("...syncing %s\n", repo)
-			out, err := exec.Command("cd", repo, "&&", "git", "pull").Output()
+			out, err := exec.Command("git", "-C", repo, "pull").Output()
 			fmt.Printf("OUT: %s\n", out)
 			if err != nil {
 				fmt.Printf("ERR: %s\n", err.Error())
